@@ -18,15 +18,25 @@ router
     );
 
     res.json(inventoryItems); // Return the inventory items as JSON
-  })
+  });
+ 
 
-// TODO: Create a POST route that inserts inventory items
-.post(async (req, res) => {
-  const {inventoryItems} = req.body;
-  // This route will accept price, quantity, name, image, and description as JSON
-
-  // in the request body.
+  // TODO: Create a POST route that inserts inventory items
+  router
+  .route('/inventory')
+  .post(async (req, res) => {
+    const { inventoryItems } = req.body;
   
+    // Insert  inventory item into the database
+    await db.query(
+      `INSERT INTO inventory (name, image, description, price, quantity) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [inventoryItems.name, inventoryItems.image, inventoryItems.description, inventoryItems.price, inventoryItems.quantity]
+    );
+    res.status(204).end();
+  })
+  // This route will accept price, quantity, name, image, and description as JSON
+  // in the request body.
   // It should return a 204 status code
 
 router
